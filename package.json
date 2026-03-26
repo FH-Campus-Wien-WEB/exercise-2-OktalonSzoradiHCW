@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
-    "start-nodemon": "nodemon server/server.js"
+    "start-nodemon": "nodemon server/server.js",
+    "dev": "npm run start-nodemon"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,25 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "@biomejs/biome": "2.4.4",
+    "htmlhint": "^1.9.1",
+    "nodemon": "^3.1.14",
+    "standard": "^17.1.2",
+    "stylelint": "^17.4.0",
+    "stylelint-config-concentric-order": "^5.3.0",
+    "stylelint-config-recommended": "^18.0.0",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-config-two-dash-bem": "^1.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^3.0.0",
+    "stylelint-high-performance-animation": "^2.0.0",
+    "stylelint-media-use-custom-media": "^4.1.0",
+    "stylelint-no-browser-hacks": "^2.0.0",
+    "stylelint-no-unresolved-module": "^1.0.1",
+    "stylelint-no-unsupported-browser-features": "^8.1.1",
+    "stylelint-plugin-defensive-css": "^2.6.0",
+    "stylelint-plugin-logical-css": "^2.0.2",
+    "stylelint-plugin-use-baseline": "^1.2.4",
+    "stylelint-use-nesting": "^6.0.2",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1"
   }
 }
