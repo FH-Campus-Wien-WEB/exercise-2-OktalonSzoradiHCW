@@ -19,7 +19,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  /* justify-content: space-between; */
+  justify-content: center;
   margin: 2rem 0;
   box-shadow:
     0 -1px 0 hsl(0deg 0% 0% / 33.3333%),
@@ -33,10 +33,16 @@
       hsl(0deg 0% 75%));
   padding: 1rem;
   inline-size: calc(100% - 2rem);
+  list-style: "";
+}
+
+.movies__li {
+  flex: 1;
 }
 
 .movie {
-  flex: 1;
+  display: flex;
+  flex-flow: column wrap;
   border-radius: 4px;
   box-shadow:
     inset 0 0 0 1px hsl(0deg 0% 100% / 50%),
@@ -50,11 +56,17 @@
   max-inline-size: 30vi;
 }
 
+.movie__poster-area {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .movie__poster {
   border-radius: 4px;
   box-shadow:
     0 0 0 1px hsl(0deg 0% 0% / 75%),
     0 0 0 2px hsl(0deg 0% 100% / 50%);
+  max-inline-size: 100%;
 }
 
 .movie__runtime-and-release {
@@ -63,7 +75,7 @@
 
 .movie__genres {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.5rem;
   margin: 0.5rem 0;
   padding: 0;
@@ -85,4 +97,10 @@
 
 .movie__description {
   text-align: justify;
+}
+
+.movie__directors,
+.movie__writers,
+.movie__actors {
+  list-style: disc;
 }

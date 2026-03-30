@@ -1,0 +1,11 @@
+@media (width < 1021px) {
+  .movie {
+    max-inline-size: none;
+  }
+}
+
+@media (width < 401px) {
+  .movie__genres {
+    flex-wrap: wrap;
+  }
+}

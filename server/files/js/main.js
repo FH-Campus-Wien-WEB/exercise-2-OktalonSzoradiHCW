@@ -1,88 +1,134 @@
 /* eslint-env browser */
 
-// function reverseString (s) {
-//   return s.split('').reverse().join('')
-// }
+/**
+ * @typedef {Object} Movie
+ * @property {string} Title
+ * @property {string} Released
+ * @property {number | string} Runtime
+ * @property {string[]} Genres
+ * @property {string[]} Directors
+ * @property {string[]} Writers
+ * @property {string[]} Actors
+ * @property {string} Plot
+ * @property {string} Poster
+ * @property {number} Metascore
+ * @property {number} imdbRating
+ */
 
+/**
+ * Creates an HTML element with optional class names and text content.
+ *
+ * @param {keyof HTMLElementTagNameMap} tag - The HTML tag name (e.g. 'div', 'p', 'img').
+ * @param {string} [classList] - Optional CSS class(es) to assign.
+ * @param {string} [innerText] - Optional text content (ignored if falsy).
+ * @returns {HTMLElementTagNameMap[keyof HTMLElementTagNameMap]} The created element.
+ */
+function createHtmlElement (tag, classList, innerText) {
+  const element = document.createElement(tag)
+  if (classList) element.className = classList
+  if (innerText) element.innerText = innerText
+  return element
+}
+
+/**
+ * Creates a <ul> element populated with <li> items.
+ *
+ * @param {string[]} items - List of text items to render.
+ * @param {string} listClass - CSS class for the <ul>.
+ * @param {string} itemClass - CSS class for each <li>.
+ * @returns {HTMLUListElement} The generated unordered list.
+ */
+function createList (items, listClass, itemClass) {
+  const ul = document.createElement('ul')
+  ul.className = listClass
+
+  // for (const item of items) {
+  //   const li = createHtmlElement('li', itemClass, item)
+  //   ul.appendChild(li)
+  // }
+
+  ul.append(...items.map(item => createHtmlElement('li', itemClass, item)))
+
+  return ul
+}
+
+/**
+ * Creates a section consisting of a header (<h3>) and a list.
+ *
+ * @param {string} title - Base title for the section (e.g. "Director").
+ * @param {string[]} items - Items to include in the list.
+ * @param {string} listClass - CSS class for the <ul>.
+ * @param {string} itemClass - CSS class for each <li>.
+ * @returns {DocumentFragment} A fragment containing the header and list.
+ */
+function createSection (title, items, listClass, itemClass) {
+  const fragment = document.createDocumentFragment()
+
+  const header = createHtmlElement(
+    'h3',
+    null,
+    `${title}${items.length > 1 ? 's' : ''}`
+  )
+
+  const list = createList(items, listClass, itemClass)
+
+  fragment.appendChild(header)
+  fragment.appendChild(list)
+
+  return fragment
+}
+
+/**
+ * Creates a complete movie card list item element.
+ *
+ * @param {Movie} movie - Movie data used to populate the card.
+ * @returns {HTMLLIElement} An <li> element containing the movie card.
+ */
 function createMovieCard (movie) {
-  const movieCard = document.createElement('div')
-  movieCard.classList = 'movie'
+  const li = createHtmlElement('li', 'movies__li')
+  const movieCard = createHtmlElement('article', 'movie')
+  li.appendChild(movieCard)
 
-  const image = document.createElement('img')
-  image.classList = 'movie__poster'
+  const imageWrapper = createHtmlElement('picture', 'movie__poster-area')
+  const image = createHtmlElement('img', 'movie__poster')
   image.src = movie.Poster
   image.alt = `Movie poster for ${movie.Title}`
-  movieCard.appendChild(image)
+  imageWrapper.appendChild(image)
 
-  const movieTitle = document.createElement('h2')
-  movieTitle.classList = 'movie__title'
-  movieTitle.innerText = movie.Title
-  movieCard.appendChild(movieTitle)
+  const title = createHtmlElement('h2', 'movie__title', movie.Title)
 
-  const movieRuntimeAndRelease = document.createElement('span')
-  movieRuntimeAndRelease.classList = 'movie__runtime-and-release'
-  movieRuntimeAndRelease.innerText = `Runtime: ${movie.Runtime} minutes • Released: ${movie.Released}`
-  movieCard.appendChild(movieRuntimeAndRelease)
+  const meta = createHtmlElement(
+    'span',
+    'movie__runtime-and-release',
+    /* eslint-disable no-irregular-whitespace */
+    `Runtime: ${movie.Runtime} minutes • ` +
+      `Released: ${movie.Released} • ` +
+      `${movie.Metascore ? `Metascore: ${movie.Metascore} • ` : ''}` +
+      `IMDb Rating: ${movie.imdbRating}`
+    /* eslint-enable no-irregular-whitespace */
+  )
 
-  const movieGenres = document.createElement('ul')
-  movieGenres.classList = 'movie__genres'
-  for (const genre of movie.Genres) {
-    const movieGenre = document.createElement('li')
-    movieGenre.classList = 'movie__genre'
-    movieGenre.innerText = `${genre}`
-    movieGenres.appendChild(movieGenre)
-  }
-  movieCard.appendChild(movieGenres)
-  // genre.map() could work too
+  const genres = createList(movie.Genres, 'movie__genres', 'movie__genre')
 
-  const movieDescription = document.createElement('p')
-  movieDescription.classList = 'movie__description'
-  movieDescription.innerText = movie.Plot
-  movieCard.appendChild(movieDescription)
+  const description = createHtmlElement('p', 'movie__description', movie.Plot)
 
-  const headerDirectors = document.createElement('h3')
-  headerDirectors.innerText = `Director${movie.Directors.length > 1 ? 's' : ''}`
-  movieCard.appendChild(headerDirectors)
+  movieCard.append(
+    imageWrapper,
+    title,
+    meta,
+    genres,
+    description,
+    createSection(
+      'Director',
+      movie.Directors,
+      'movie__directors',
+      'movie__director'
+    ),
+    createSection('Writer', movie.Writers, 'movie__writers', 'movie__writer'),
+    createSection('Actor', movie.Actors, 'movie__actors', 'movie__actor')
+  )
 
-  const movieDirectors = document.createElement('ul')
-  movieDirectors.classList = 'movie__directors'
-  for (const director of movie.Directors) {
-    const movieDirector = document.createElement('li')
-    movieDirector.classList = 'movie__director'
-    movieDirector.innerText = `${director}`
-    movieDirectors.appendChild(movieDirector)
-  }
-  movieCard.appendChild(movieDirectors)
-
-  const headerWriters = document.createElement('h3')
-  headerWriters.innerText = `Writer${movie.Writers.length > 1 ? 's' : ''}`
-  movieCard.appendChild(headerWriters)
-
-  const movieWriters = document.createElement('ul')
-  movieWriters.classList = 'movie__writors'
-  for (const writer of movie.Writers) {
-    const movieWriter = document.createElement('li')
-    movieWriter.classList = 'movie__writor'
-    movieWriter.innerText = `${writer}`
-    movieWriters.appendChild(movieWriter)
-  }
-  movieCard.appendChild(movieWriters)
-
-  const headerActors = document.createElement('h3')
-  headerActors.innerText = `Writer${movie.Actors.length > 1 ? 's' : ''}`
-  movieCard.appendChild(headerActors)
-
-  const movieActors = document.createElement('ul')
-  movieActors.classList = 'movie__actors'
-  for (const actor of movie.Actors) {
-    const movieActor = document.createElement('li')
-    movieActor.classList = 'movie__actor'
-    movieActor.innerText = `${actor}`
-    movieActors.appendChild(movieActor)
-  }
-  movieCard.appendChild(movieActors)
-
-  return movieCard
+  return li
 }
 
 window.onload = function () {
@@ -90,10 +136,6 @@ window.onload = function () {
   xhr.onload = function () {
     const appElement = document.querySelector('#app')
     if (xhr.status === 200) {
-      /* Part 2: Build the HTML elements here and append them to the body */
-      // appElement.append(reverseString(xhr.responseText))
-      // appElement.append(xhr.responseText)
-
       const response = JSON.parse(xhr.responseText)
       console.log(response)
 
