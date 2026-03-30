@@ -15,7 +15,7 @@
   margin: 0 1rem;
 }
 
-#movies {
+.movies {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -34,6 +34,15 @@
   padding: 1rem;
   inline-size: calc(100% - 2rem);
   list-style: "";
+}
+
+.movies__error {
+  flex-direction: column;
+  justify-content: start;
+  background: linear-gradient(to bottom,
+      hsl(0deg 100% 75% / 50%),
+      hsl(0deg 100% 40% / 50%),
+      hsl(0deg 100% 50% / 50%));
 }
 
 .movies__li {

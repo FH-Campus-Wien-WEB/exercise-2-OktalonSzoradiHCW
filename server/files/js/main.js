@@ -134,20 +134,19 @@ function createMovieCard (movie) {
 window.onload = function () {
   const xhr = new XMLHttpRequest()
   xhr.onload = function () {
-    const appElement = document.querySelector('#app')
+    const movies = document.querySelector('#movies')
     if (xhr.status === 200) {
       const response = JSON.parse(xhr.responseText)
-      console.log(response)
-
-      const movies = document.querySelector('#movies')
-
       for (const movie of response) {
         movies.appendChild(createMovieCard(movie))
       }
     } else {
-      appElement.append(
-        `Data could not be loaded. Status ${xhr.status} - ${xhr.statusText}`
+      movies.classList = 'movies movies__error'
+      movies.append(
+        createHtmlElement('h2', null, `${xhr.status} • ${xhr.statusText}`),
+        'Could not GET /movies'
       )
+      console.error('Could not GET /movies', xhr)
     }
   }
   xhr.open('GET', '/movies')
