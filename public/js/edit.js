@@ -1,6 +1,10 @@
 /* eslint-env browser */
 
 function setMovie (movie) {
+  document.title = `Editing ${movie.Title} – Movies!`
+
+  document.querySelector('#movie').innerText = JSON.stringify(movie)
+
   for (const element of document.forms[0].elements) {
     const name = element.id
     const value = movie[name]
@@ -86,7 +90,9 @@ const xhr = new XMLHttpRequest()
 xhr.open('GET', '/movies/' + imdbID)
 xhr.onload = function () {
   if (xhr.status === 200) {
-    setMovie(JSON.parse(xhr.responseText))
+    const responseJSON = JSON.parse(xhr.responseText)
+    console.log(responseJSON)
+    setMovie(responseJSON)
   } else {
     alert(
       'Loading of movie data failed. Status was ' +
