@@ -101,10 +101,10 @@ function createMovieCard (movie) {
     'span',
     'movie__runtime-and-release',
     /* eslint-disable no-irregular-whitespace */
-    `Runtime: ${movie.Runtime} minutes • ` +
+    `${movie.Runtime ? `Runtime: ${movie.Runtime} • ` : ''}` +
       `Released: ${movie.Released} • ` +
       `${movie.Metascore ? `Metascore: ${movie.Metascore} • ` : ''}` +
-      `IMDb Rating: ${movie.imdbRating}`
+      `${movie.imdbRating ? `IMDb Rating: ${movie.imdbRating}` : ''}`
     /* eslint-enable no-irregular-whitespace */
   )
 
