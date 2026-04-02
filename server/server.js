@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'files')))
 app.get('/movies', function (req, res) {
   const omdbData = movies.map(
     ({
+      imdbID,
       Title,
       Released,
       Runtime,
@@ -29,6 +30,7 @@ app.get('/movies', function (req, res) {
       Metascore,
       imdbRating
     }) => ({
+      imdbID,
       Title,
       Released: new Date(Released).toLocaleDateString('en-CA'),
       Runtime: Number.parseInt(Runtime),
@@ -43,16 +45,22 @@ app.get('/movies', function (req, res) {
     })
   )
   res.send(omdbData)
-  /* Task 1.2. Remove the line below and eturn the movies from
-     the model as an array */
-  // res.sendStatus(404)
 })
 
 // Configure a 'get' endpoint for a specific movie
 app.get('/movies/:imdbID', function (req, res) {
   /* Task 2.1. Remove the line below and add the
     functionality here */
-  res.sendStatus(404)
+  const { imdbID } = req.params
+
+  const result = movies.find(m => m.imdbID === imdbID)
+
+  if (result) {
+    res.send(result)
+    console.log(result)
+  } else {
+    res.sendStatus(404)
+  }
 })
 
 /* Task 3.1 and 3.2.

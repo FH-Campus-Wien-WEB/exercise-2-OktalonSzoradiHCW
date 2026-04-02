@@ -97,7 +97,7 @@ function createMovieCard (movie) {
 
   const title = createHtmlElement('h2', 'movie__title', movie.Title)
 
-  const meta = createHtmlElement(
+  const metadata = createHtmlElement(
     'span',
     'movie__runtime-and-release',
     /* eslint-disable no-irregular-whitespace */
@@ -112,20 +112,45 @@ function createMovieCard (movie) {
 
   const description = createHtmlElement('p', 'movie__description', movie.Plot)
 
+  const directors = createSection(
+    'Director',
+    movie.Directors,
+    'movie__directors',
+    'movie__director'
+  )
+
+  const writers = createSection(
+    'Writer',
+    movie.Writers,
+    'movie__writers',
+    'movie__writer'
+  )
+
+  const actors = createSection(
+    'Actor',
+    movie.Actors,
+    'movie__actors',
+    'movie__actor'
+  )
+
+  const buttonArea = createHtmlElement('footer', 'movie__button-area')
+  const buttonEdit = createHtmlElement('a', 'movie__button', 'Edit')
+  buttonEdit.href = `/edit.html?imdbID=${movie.imdbID}`
+  buttonEdit.addEventListener('click', () => {
+    buttonEdit.classList.toggle('movie__button--active')
+  })
+  buttonArea.appendChild(buttonEdit)
+
   movieCard.append(
     imageWrapper,
     title,
-    meta,
+    metadata,
     genres,
     description,
-    createSection(
-      'Director',
-      movie.Directors,
-      'movie__directors',
-      'movie__director'
-    ),
-    createSection('Writer', movie.Writers, 'movie__writers', 'movie__writer'),
-    createSection('Actor', movie.Actors, 'movie__actors', 'movie__actor')
+    directors,
+    writers,
+    actors,
+    buttonArea
   )
 
   return li
