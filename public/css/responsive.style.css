@@ -1,5 +1,6 @@
 @media (width < 1021px) {
-  .movie {
+  /* stylelint-disable-next-line defensive-css/require-pure-selectors */
+  .movie:not([hidden]) {
     max-inline-size: none;
   }
 }

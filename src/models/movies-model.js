@@ -3,7 +3,36 @@ import fs from 'fs'
 import path from 'path'
 
 const filePath = path.resolve('./src/movies.json')
-const movies = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+const rawMovies = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+const formattedMovies = rawMovies.map(
+  ({
+    imdbID,
+    Title,
+    Released,
+    Runtime,
+    Genre,
+    Director,
+    Writer,
+    Actors,
+    Plot,
+    Poster,
+    Metascore,
+    imdbRating
+  }) => ({
+    imdbID,
+    Title,
+    Released: dateToISO8601format(Released),
+    Runtime: Number.parseInt(Runtime),
+    Genres: Genre.split(', '),
+    Directors: Director.split(', '),
+    Writers: Writer.split(', '),
+    Actors: Actors.split(', '),
+    Plot,
+    Poster,
+    Metascore: Number(Metascore),
+    imdbRating: Number(imdbRating)
+  })
+)
 
 function dateToISO8601format (input) {
   const date = input instanceof Date ? input : new Date(input)
@@ -20,43 +49,49 @@ function dateToISO8601format (input) {
 }
 
 export async function getMoviesJson () {
-  return movies.map(
-    ({
-      imdbID,
-      Title,
-      Released,
-      Runtime,
-      Genre,
-      Director,
-      Writer,
-      Actors,
-      Plot,
-      Poster,
-      Metascore,
-      imdbRating
-    }) => ({
-      imdbID,
-      Title,
-      Released: dateToISO8601format(Released),
-      Runtime: Number.parseInt(Runtime),
-      Genres: Genre.split(', '),
-      Directors: Director.split(', '),
-      Writers: Writer.split(', '),
-      Actors: Actors.split(', '),
-      Plot,
-      Poster,
-      Metascore: Number(Metascore),
-      imdbRating: Number(imdbRating)
-    })
-  )
+  return formattedMovies
 }
 
 export async function getMovieJson (imdbID) {
-  const formattedMovies = await getMoviesJson()
+  const movie = formattedMovies.find(m => m.imdbID === imdbID)
 
-  const movie = formattedMovies.find(
-    m => m.imdbID === imdbID
+  return movie
+}
+
+export async function editMovieJson (
+  imdbID,
+  // {
+  //   Title,
+  //   Released,
+  //   Runtime,
+  //   Genres,
+  //   Directors,
+  //   Writers,
+  //   Actors,
+  //   Plot,
+  //   Poster,
+  //   Metascore,
+  //   imdbRating
+  // }
+  newMovie
+) {
+  const movieIndex = formattedMovies.indexOf(
+    formattedMovies.find(movie => movie.imdbID === imdbID)
   )
+  const movie = { ...formattedMovies[movieIndex] }
+
+  if (!movie) return movie
+
+  const whatWasChanged = []
+
+  for (const newMovieProperty in newMovie) {
+    if (newMovie[newMovieProperty] !== movie[newMovieProperty]) {
+      movie[newMovieProperty] = newMovie[newMovieProperty]
+      whatWasChanged.push(newMovieProperty)
+    }
+  }
+
+  formattedMovies[movieIndex] = movie
 
   return movie
 }

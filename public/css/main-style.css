@@ -4,10 +4,12 @@
     inset 0 -1px 0 hsl(0deg 0% 100% / 50%),
     0 1px 0 hsl(0deg 0% 0% / 33.3333%),
     0 8px 16px hsl(0deg 0% 0% / 25%);
-  background: linear-gradient(to bottom,
-      hsl(0deg 0% 100%),
-      hsl(0deg 0% 66.6667%),
-      hsl(0deg 0% 80%));
+  background: linear-gradient(
+    to bottom,
+    hsl(0deg 0% 100%),
+    hsl(0deg 0% 66.6667%),
+    hsl(0deg 0% 80%)
+  );
   padding: 1rem;
 }
 
@@ -27,10 +29,12 @@
     inset 0 -1px 0 hsl(0deg 0% 100% / 50%),
     0 1px 0 hsl(0deg 0% 0% / 33.3333%),
     0 4px 1rem hsl(0deg 0% 0% / 25%);
-  background: linear-gradient(to bottom,
-      hsl(0deg 0% 80%),
-      hsl(0deg 0% 50%),
-      hsl(0deg 0% 75%));
+  background: linear-gradient(
+    to bottom,
+    hsl(0deg 0% 80%),
+    hsl(0deg 0% 50%),
+    hsl(0deg 0% 75%)
+  );
   padding: 1rem;
   inline-size: calc(100% - 2rem);
   list-style: "";
@@ -39,28 +43,34 @@
 .movies__error {
   flex-direction: column;
   justify-content: start;
-  background: linear-gradient(to bottom,
-      hsl(0deg 100% 75% / 50%),
-      hsl(0deg 100% 40% / 50%),
-      hsl(0deg 100% 50% / 50%));
+  background: linear-gradient(
+    to bottom,
+    hsl(0deg 100% 75% / 50%),
+    hsl(0deg 100% 40% / 50%),
+    hsl(0deg 100% 50% / 50%)
+  );
 }
 
 .movies__li {
   flex: 1;
 }
 
-.movie {
+/* stylelint-disable-next-line defensive-css/require-pure-selectors */
+.movie:not([hidden]) {
   display: flex;
   flex-flow: column wrap;
+  margin-block-end: 1rem;
   border-radius: 4px;
   box-shadow:
     inset 0 0 0 1px hsl(0deg 0% 100% / 50%),
     0 0 0 1px hsl(0deg 0% 0% / 25%),
     0 4px 0.5rem hsl(0deg 0% 0% / 25%);
-  background: linear-gradient(to bottom,
-      hsl(0deg 0% 100%),
-      hsl(0deg 0% 75%),
-      hsl(0deg 0% 80%));
+  background: linear-gradient(
+    to bottom,
+    hsl(0deg 0% 100%),
+    hsl(0deg 0% 75%),
+    hsl(0deg 0% 80%)
+  );
   padding: 1rem;
   max-inline-size: 30vi;
 }
@@ -88,7 +98,7 @@
   gap: 0.5rem;
   margin: 0.5rem 0;
   padding: 0;
-  list-style: '';
+  list-style: "";
 }
 
 .movie__genre {
@@ -96,12 +106,14 @@
   box-shadow:
     inset 0 0 0 1px hsl(0deg 0% 100% / 50%),
     0 0 0 1px hsl(0deg 0% 0% / 55%);
-  background: linear-gradient(to bottom,
-      hsl(0deg 0% 35%),
-      hsl(0deg 0% 15%),
-      hsl(0deg 0% 25%));
+  background: linear-gradient(
+    to bottom,
+    hsl(0deg 0% 35%),
+    hsl(0deg 0% 15%),
+    hsl(0deg 0% 25%)
+  );
   padding: 0.25rem 0.5rem;
-  color: hsl(0deg 0% 95%)
+  color: hsl(0deg 0% 95%);
 }
 
 .movie__description {
@@ -131,21 +143,26 @@
     0 0 0 1px hsl(0deg 0% 0% / 25%),
     0 2px 4px 0 hsl(0deg 0% 0% / 25%);
   background:
-    linear-gradient(to right,
+    linear-gradient(
+      to right,
       hsl(0deg 0% 0% / 5%),
       transparent,
-      hsl(0deg 0% 0% / 5%)),
-    linear-gradient(to bottom,
+      hsl(0deg 0% 0% / 5%)
+    ),
+    linear-gradient(
+      to bottom,
       hsl(0deg 0% 95%),
       hsl(0deg 0% 75%),
-      hsl(0deg 0% 80%));
+      hsl(0deg 0% 80%)
+    );
   padding: 0.5rem 2rem;
   text-shadow: 0 -0.5pt 0.25pt hsl(0deg 0% 100% / 50%);
   color: hsl(0deg 0% 15%);
 }
 
 @media (hover: hover) {
-  .movie__button:hover:not(.movie__button--active) {
+  .movie__button:focus-visible,
+  .movie__button:hover {
     transition-duration: 50ms;
     box-shadow:
       inset 0 0 0 1px hsl(0deg 0% 100% / 50%),
@@ -156,10 +173,21 @@
       0 2px 4px 0 hsl(0deg 0% 0% / 25%);
     filter: brightness(110%);
   }
+
+  .movie__button--active:hover {
+    transition-duration: 5ms;
+    box-shadow:
+      inset 0 0 0 1px hsl(0deg 0% 100% / 50%),
+      inset 0 2px 0 0 hsl(0deg 0% 100% / 5%),
+      inset 0 -2px 0 0 hsl(0deg 0% 100% / 25%),
+      inset 0 2px 8px 2px hsl(0deg 0% 0% / 25%),
+      0 0 0 1px hsl(0deg 0% 0% / 25%);
+    filter: brightness(90%);
+  }
 }
 
-.movie__button--active,
-.movie__button:active {
+.movie__button:active,
+.movie__button--active {
   transition-duration: 5ms;
   box-shadow:
     inset 0 0 0 1px hsl(0deg 0% 100% / 50%),

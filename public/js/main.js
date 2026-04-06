@@ -1,4 +1,5 @@
 /* eslint-env browser */
+import { createHtmlElement } from './util.js'
 
 /**
  * @typedef {Object} Movie
@@ -14,21 +15,6 @@
  * @property {number} Metascore
  * @property {number} imdbRating
  */
-
-/**
- * Creates an HTML element with optional class names and text content.
- *
- * @param {keyof HTMLElementTagNameMap} tag - The HTML tag name (e.g. 'div', 'p', 'img').
- * @param {string} [classList] - Optional CSS class(es) to assign.
- * @param {string} [innerText] - Optional text content (ignored if falsy).
- * @returns {HTMLElementTagNameMap[keyof HTMLElementTagNameMap]} The created element.
- */
-function createHtmlElement (tag, classList, innerText) {
-  const element = document.createElement(tag)
-  if (classList) element.className = classList
-  if (innerText) element.innerText = innerText
-  return element
-}
 
 /**
  * Creates a <ul> element populated with <li> items.
@@ -101,10 +87,14 @@ function createMovieCard (movie) {
     'span',
     'movie__runtime-and-release',
     /* eslint-disable no-irregular-whitespace */
-    `${movie.Runtime ? `Runtime: ${movie.Runtime} • ` : ''}` +
-      `Released: ${movie.Released} • ` +
-      `${movie.Metascore ? `Metascore: ${movie.Metascore} • ` : ''}` +
+    [
+      `${movie.Runtime ? `Runtime: ${movie.Runtime} minutes` : ''}`,
+      `Released: ${movie.Released}`,
+      `${movie.Metascore ? `Metascore: ${movie.Metascore}` : ''}`,
       `${movie.imdbRating ? `IMDb Rating: ${movie.imdbRating}` : ''}`
+    ]
+      .filter(md => Boolean(md))
+      .join(' • ')
     /* eslint-enable no-irregular-whitespace */
   )
 
@@ -138,6 +128,9 @@ function createMovieCard (movie) {
   buttonEdit.href = `/edit.html?imdbID=${movie.imdbID}`
   buttonEdit.addEventListener('click', () => {
     buttonEdit.classList.toggle('movie__button--active')
+    setTimeout(() => {
+      buttonEdit.classList.toggle('movie__button--active')
+    }, 1000)
   })
   buttonArea.appendChild(buttonEdit)
 
@@ -161,16 +154,20 @@ window.onload = function () {
   xhr.onload = function () {
     const movies = document.querySelector('#movies')
     if (xhr.status === 200) {
+      const errorMessage = document.querySelector('#server-error')
+      errorMessage.remove()
       const response = JSON.parse(xhr.responseText)
       for (const movie of response) {
         movies.appendChild(createMovieCard(movie))
       }
     } else {
       movies.classList = 'movies movies__error'
-      movies.append(
+      const li = createHtmlElement('li')
+      li.append(
         createHtmlElement('h2', null, `${xhr.status} • ${xhr.statusText}`),
-        'Could not GET /movies'
+        createHtmlElement('p', null, 'Could not GET /movies')
       )
+      movies.append(li)
       console.error('Could not GET /movies', xhr)
     }
   }

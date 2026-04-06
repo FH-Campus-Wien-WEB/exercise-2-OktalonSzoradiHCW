@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
   "files": {
-    "includes": ["**/*.html"]
+    "includes": ["**/*.html", "**/*.css"]
   },
   "html": {
     "experimentalFullSupportEnabled": true,
@@ -20,6 +20,18 @@
       "indentScriptAndStyle": true,
       "selfCloseVoidElements": "never",
       "trailingNewline": true
+    },
+    "linter": {
+      "enabled": true
+    },
+    "assist": {
+      "enabled": true
+    }
+  },
+  "css": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space"
     },
     "linter": {
       "enabled": true

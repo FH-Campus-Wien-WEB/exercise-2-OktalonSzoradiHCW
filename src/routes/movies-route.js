@@ -6,5 +6,6 @@ const router = express.Router()
 
 router.get('/', asyncHandler(controller.getMovies))
 router.get('/:imdbID', asyncHandler(controller.getMovie))
+router.put('/:imdbID', asyncHandler(controller.editMovie))
 
 export default router
